@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ScreenWise - Timer</title>
+        <meta name="description" content="ScreenWise Screen Time Tracker">
+        <meta name="author" content="SIT725 Students - KT, PJ and PH">
+        <meta property="og:title" content="ScreenWise Timer">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="ScreenWise Timer">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Custom Style Sheet-->
+        <link rel="stylesheet" href="css/styles.css">
+
+    </head>
+
+    <body>
+        <!-- need to move this to css, also adjust styling to suit website -->
+        <style>
+            #customAlert {
+                display: none;
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                border: 1px solid black;
+                padding: 20px;
+                z-index: 1000;
+            }
+            #overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+        </style>
+        <div id="overlay"></div>
+        <div id="customAlert">
+            <p id="alertMessage"></p>
+            <button onclick="closeAlertPopup()">OK</button>
+        </div>
+
+        <img class="responsive-img" width="100%" src="images/banner.png" />
+        <main class="main-body">
+            <div class="container">
+                <div class="row">
+                    <h2>Timer&nbsp<span id="timerStatus"></h2>
+                    <form id="timerForm">
+                        <label>Select your name</label>
+                        <select id="childNameSelect" onchange="displayPointsAvailable(this)">
+                            <option value="" disabled selected>select...</option>
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="pointsAvailable"></div>
+                        
+                        <div class="space-above-50"></div>
+                        <label>Select the online activity you will do</label>
+                        <select id="onlineActivityNameSelect" onchange="displayOnlineActivityPointsPerHour(this)">
+                            <option value="" disabled selected>select...</option>
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="onlineActivityPointsPerHour"></div>
+
+                        <div class="space-above-50"></div>
+                        <label>Select the activity you will do when your screen time is up</label>
+                        <select id="offlineActivityNameSelect" onchange="displayOfflineActivityPointsPerHour(this)">
+                            <option value="" disabled selected>select...</option>
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="offlineActivityPointsPerHourText"></div>
+
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col s12 right-align"><button type="submit" class="waves-effect waves-light btn" id="btnStartTimer">Start Timer</button></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 right-align"><button type="button" class="waves-effect waves-light btn" id="btnBackToIndex">Back to Main</button></div>
+                        </div>
+                    </form>
+
+                    <form id="timerFormDisplay">
+                        <label>Child Name</label>
+                        <input id="childNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="pointsAvailableDisplay"></div>
+                        
+                        <div class="space-above-50"></div>
+                        <label>Screentime Activity</label>
+                        <input id="onlineActivityNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="onlineActivityPointsPerHourDisplay"></div>
+
+                        <div class="space-above-50"></div>
+                        <label>Post Screentime (Offline) Activity</label>
+                        <input id="offlineActivityNameDisplay" disabled="true">
+                        </select>
+                        <div class="grey-text text-darken-2 min-height-20" id="offlineActivityPointsPerHourDisplay"></div>
+
+                        <div class="space-above-50"></div>
+                        
+                        <div class="row" id="rowStopTimer">
+                            <div class="col s12 right-align">
+                                <button type="submit" class="waves-effect waves-light btn" id="btnStopTimer">Stop Timer</button>
+                            </div>
+                        </div>
+                        <div class="row" id="rowNewTimer">
+                            <div class="row">
+                                <div class="col s12 right-align">
+                                    <button type="button" class="waves-effect waves-light btn" id="btnTimerForm">New Timer</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 right-align">
+                                    <button type="button" class="waves-effect waves-light btn" id="btnBack">Back to Main</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </form>
+                        <div class="space-above-50"></div>
+                        <div class="row">
+                            <span id="timerRunning"></span>
+                            <div id="timerDisplay"></div>
+                            <div class="error-msg-text" id="messageError"></div><div class="ok-msg-txt" id="messageOk"></div>
+                        </div>
+                        <form id="timerFormComplete">
+                    </form>
+                        <input type="hidden" id="startDateTime">
+                        <input type="hidden" id="endDateTime">
+                        <input type="hidden" id="pointsPerHour">
+                        <input type="hidden" id="minutesPerPoint">
+                        <input type="hidden" id="dailyAllowancePoints">
+                        <input type="hidden" id="dailyLimitPoints">
+                        <input type="hidden" id="defaultPointsPerHour">
+                    </form>
+                </div>
+            </div>
+    
+            
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- Common javascript -->
+        <script src="js/scripts.js"></script>
+        <!-- Socket JS for timer -->
+        <script src="/socket.io/socket.io.js"></script>
+        <!-- Timer form javascript -->
+        <script src="js/timer.js"></script>      
+
+
+    </body>
+</html>

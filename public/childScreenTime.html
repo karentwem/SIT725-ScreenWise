@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScreenWise - Child Usage Dashboard</title>
+    <meta name="description" content="ScreenWise Screen Time Tracker">
+    <meta name="author" content="SIT725 Students - KT, PJ, AB and PH">
+    <meta property="og:title" content="ScreenWise Child ScreenTime Usage">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ScreenWise Child ScreenTime Usage">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+<body>
+    <img class="responsive-img" width="100%" src="images/banner.png" />
+    <div class="container">
+        <h4 class="center-align">Child's Screen Time</h4>
+        <div class="row">
+            <div class="input-field col s10">
+              <select name="" id="child_selector"></select>
+              <!-- <input id="childNameInput" type="text" placeholder="Enter child name"> -->
+              <label for="childNameInput">Child Name</label>
+            </div>
+            <div class="col s2">
+              <button class="btn waves-effect waves-light blue" onclick="fetchChildRecords()">Search</button>
+            </div>
+          </div>
+        <table class="highlight centered">
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Points Used</th>
+              <th>Minutes Used</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+
+          </tbody>
+        </table>
+    
+        <div class="card-panel teal lighten-4">
+          <h5>Totals</h5>
+          <p><strong>Total Points Used:</strong> <span id="total-points">0</span></p>
+          <p><strong>Total Minutes Used:</strong> <span id="total-minutes">0 minutes</span></p>
+        </div>
+      </div>
+    
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- <script src="js/childDashboard.js"></script> -->
+         <script src="js/childScreenTime.js"></script>
+</body>
+
+</html>

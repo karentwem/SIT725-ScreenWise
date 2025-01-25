@@ -19,7 +19,13 @@ const { postOnlineActivity } = require('./public/js/onlineActivity_db');
 const { startTimer } = require('./public/js/timer_db');
 const { listOnlineActivity } = require('./public/js/onlineActivity_db');
 const { postDailyUsage, getDailyUsage  } = require('./public/js/dailyUsage_db');
+/////
+const { listChildList, deleteChild, updateChild} = require('./public/js/child_db');
+const { deleteOfflineActivity, updateOfflineActivity } = require('./public/js/offlineActivity_db');
+const { deleteOnlineActivity, updateOnlineActivity } = require('./public/js/onlineActivity_db');
 
+const { getChildScreenTime} = require('./public/js/childScreenTime_db');
+const { getChildData } = require('./public/js/childDashboard_db');
 
 // Middleware
 app.use(express.json());
@@ -184,6 +190,127 @@ io.on('connection', (socket) => {
         console.error(`Socket error: ${err.message}`);
     });
 });
+
+//////////////////////////////////
+
+
+app.delete('/api/delete-offlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+
+    deleteOfflineActivity(id, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Offline Activity record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+app.put('/api/update-offlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+    const activity = req.body;
+
+    updateOfflineActivity(id, activity, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send({
+                "message": "Error updating offline activity"
+            });
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+
+// API endpoint to add child record list
+app.get('/api/childList', (req, res) => {
+
+    listChildList((err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Failed to get child list record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+// API endpoint to delete child record
+app.delete('/api/childList/:id', (req, res) => {
+    const childId = req.params.id;
+
+    deleteChild(childId, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Child record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+app.put('/api/childList/:id', (req, res) => {
+    const childId = req.params.id;
+    const child = req.body;
+    updateChild(childId, child, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Child record.');//?? this is updating child ??
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+
+
+//
+app.delete('/api/delete-onlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+
+    deleteOnlineActivity(id, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send('Error deleting Online Activity record.');
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+// update online activity
+app.put('/api/update-onlineActivity/:id', (req, res) => {
+    const id = req.params.id;
+    const activity = req.body;
+
+    updateOnlineActivity(id, activity, (err, result, statusCode) => {
+        if (err) {
+            return res.status(500).send({
+                "message": "Error updating online activity"
+            });
+        }
+        res.status(statusCode).send(result);
+    });
+});
+
+
+//API  endpoint to get child data by ID for the dashboard
+app.get('/api/childDashboard/:id', async (req, res) => {
+    const id = req.params.id;
+
+    getChildData(id, (err, result, statusCode) => {
+        if (err) {
+            console.error('Error:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        res.status(statusCode).json(result);
+    });
+});
+
+//API  endpoint to get child screen usage time usage
+app.get('/api/screentimeusage', (req, res) => {
+    const childName = req.query.childName;
+
+    getChildScreenTime(childName, (err, result, statusCode) => {
+// const record was const result, which threww error as argument in same block function. Unsure of purpose/link yet         
+        const record = childRecords.find(record => record.childName === childName);
+         if (err) {
+             console.error('Error:', err);
+             return res.status(404).json({ message: 'Child not found' });
+         }
+        res.status(statusCode).json(result);
+    });
+});
+
 
 
 // Start the server

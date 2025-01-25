@@ -37,10 +37,50 @@ async function listOnlineActivity(callback) {
     };
 };
 
-// Need to add getOnlineActivity, updateOnlineActivity and deleteOnlineActivity
+////////////////////////////////
+let { ObjectId } = require('mongodb');
 
+async function deleteOnlineActivity(id, callback) {
+    try {
+        const deleteResult = await collection.deleteOne({ _id: new ObjectId(id) });
+        
+        if (deleteResult.deletedCount > 0) {
+            return callback(null, {
+                "message": "Activity deleted successfully",
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Activity not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
+
+
+// update offline activity
+async function updateOnlineActivity(id, activity, callback) {
+    try {
+        const updateResult = await collection.updateOne({ _id: new ObjectId(id) }, { $set: activity });
+        
+        if (updateResult.modifiedCount > 0) {
+            return callback(null, {
+                "message": "Activity updated successfully",
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Activity not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
 
 module.exports = {
     postOnlineActivity,
-    listOnlineActivity
+    listOnlineActivity,
+    deleteOnlineActivity,
+    updateOnlineActivity
 };

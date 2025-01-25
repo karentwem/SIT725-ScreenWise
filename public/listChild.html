@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScreenWise - Child List</title>
+    <meta name="description" content="ScreenWise Screen Time Tracker">
+    <meta name="author" content="SIT725 Students - KT, PJ, AB and PH">
+    <meta property="og:title" content="ScreenWise Add Child">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ScreenWise Add Child">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom Style Sheet-->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <img class="responsive-img" width="100%" src="images/banner.png" />
+    <main class="main-body">
+        <div class="container">
+            <div class="row">
+                <div class="error-msg-text" id="messageError"></div>
+                <div class="ok-msg-txt" id="messageOk"></div>
+            </div>
+            <div class="row">
+                <div class="col s12 left-align"><button type="button" class="waves-effect waves-light btn"
+                        id="btnBackToIndexAdmin">Back</button>
+                        <button type="button" class="waves-effect waves-light btn"
+                        id="btnAddChildForm">Add Child</button></div>
+
+            </div>
+            <div class="row">
+                <h3>Child List</h3>
+                <table id="childTable" class="striped highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Daily Allowance Points</th>
+                            <th>Minutes Per Point</th>
+                            <th>Daily Limit Points</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="childTableBody">
+                        <!-- Rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        </div>
+
+        <!-- Update Child Modal -->
+        <div id="updateChildModal" class="modal">
+            <div class="modal-content">
+                <h4>Update Child</h4>
+                <form id="updateChildForm">
+                    <input type="hidden" id="childId" />
+                    <div class="input-field">
+                        <input type="text" id="updateChildName" class="validate" required />
+                        <label for="updateChildName">Child Name</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="number" id="updateDailyAllowancePoints" class="validate" required />
+                        <label for="updateDailyAllowancePoints">Daily Allowance Points</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="number" id="updateMinutesPerPoint" class="validate" required />
+                        <label for="updateMinutesPerPoint">Minutes Per Point</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="number" id="updateDailyLimitPoints" class="validate" required />
+                        <label for="updateDailyLimitPoints">Daily Limit Points</label>
+                    </div>
+                </form>
+                <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+                <button id="btnUpdateChild" class="waves-effect waves-green btn-flat">Update</button>
+            </div>
+            <!-- <div class="modal-footer">
+                
+            </div> -->
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
+        <script src="js/scripts.js"></script>
+        <script src="js/childList.js"></script>
+</body>
+
+</html>

@@ -307,6 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const btnBackToChildList = document.getElementById('btnBackToChildList');
+    if (btnBackToChildList) {    
+        btnBackToChildList.addEventListener('click', () => {
+            window.location.href = 'listChild.html';
+        });
+    };
+
     
     // Display Add Child Form
     const btnAddChildForm = document.getElementById('btnAddChildForm');
@@ -316,13 +323,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // Display List Child Form
+    const btnManageChildForm = document.getElementById('btnManageChildForm');
+    if (btnManageChildForm) {    
+        btnManageChildForm.addEventListener('click', () => {
+            window.location.href='listChild.html';
+        });
+    };
+/*
     const listChildren = document.getElementById('listChildren');
     if (listChildren) {    
         listChildren.addEventListener('click', () => {
             window.location.href='list_children.html';
         });
     };
-
+*/
     const openAddOfflineActivity = document.getElementById('openAddOfflineActivity');
     if (openAddOfflineActivity) {    
         openAddOfflineActivity.addEventListener('click', () => {

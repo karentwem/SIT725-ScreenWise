@@ -37,28 +37,80 @@ async function listChild(callback) {
 };
 
 
-// Function to get a child by name - placeholder, doesn't work
-function getChild(childName, res) {
-    collection.findOne({ childName: childName }, res);
+// Function to get a child by name
+async function getChild(childName, callback) {
+    try {
+        const child = await collection.findOne({ childName: childName });
+        if (child) {
+            return callback(null, child, 200);
+        } else {
+            return callback(null, "Child not found", 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+};
+
+///////////////////////////////////
+let { ObjectId } = require('mongodb');
+
+
+// Function to list all child records
+async function listChildList(callback) {
+    try {
+        const childList = await collection.find({}).toArray();
+        return callback(null, childList, 200);
+    } catch (err) {
+        return callback(err);
+    }
+}
+
+// Function to update a child record
+async function updateChild(childId, updatedData, callback) {
+    try {
+        const result = await collection.updateOne({ _id: new ObjectId(childId) }, { $set: updatedData });
+        if (result.matchedCount > 0) {
+            return callback(null, {
+                "message": "Child record updated",
+                "childId": childId
+            }, 200);
+        } else {
+            return callback(null, {
+                "message": "Child not found"
+            }, 404);
+        }
+    } catch (err) {
+        return callback(err);
+    }
+}
+
+// Function to delete a child record
+async function deleteChild(childId, callback) {
+    try {
+        const result = await collection.deleteOne({ _id: new ObjectId(childId) });
+        if (result.deletedCount > 0) {
+            return callback(null, {
+                message: "Child record deleted",
+                childId: childId
+            }, 200);
+        } else {
+            return callback(null, "Child not found", 404);
+        }
+    } catch (err) {
+        console.log(err);
+        return callback(err);
+    }
 }
 
 
- 
-// Function to update a child record - placeholder, doesn't work
-function updateChild(childName, updatedData, res) {
-    collection.updateOne({ childName: childName }, { $set: updatedData }, res);
-}
-
-// Function to delete a child record - placeholder, doesn't work
-function deleteChild(childName, res) {
-    collection.deleteOne({ childName: childName }, res);
-}
 
 // Exporting the functions
 module.exports = {
     postChild,
     getChild,
     listChild,
+    //////
+    listChildList,
     updateChild,
-    deleteChild
+    deleteChild,
 };
